@@ -1,0 +1,52 @@
+textFile = open('day12\input.txt', 'r')
+
+arr = []
+
+for line in textFile:
+    line = line.strip()
+    arr.append([line[0], line[1:]])
+
+print(arr)
+
+def solution(data):
+    x = 0
+    y = 0
+    currState = 'E'
+    directions = 'NESW'
+    for i in range(len(data)):
+        distance = int(data[i][1])
+        if data[i][0] in directions:
+            if data[i][0] == 'E':
+                x += distance
+            elif data[i][0] == 'W':
+                x -= distance
+            elif data[i][0] == 'N':
+                y += distance
+            elif data[i][0] == 'S':
+                y -= distance
+        elif data[i][0] == 'R':
+            if distance == 90:
+                currState = directions[(directions.index(currState)+1)%len(directions)]
+            elif distance == 180:
+                currState = directions[(directions.index(currState)+2)%len(directions)]
+            elif distance == 270:
+                currState = directions[(directions.index(currState)+3)%len(directions)]
+        elif data[i][0] == 'L':
+            if distance == 90:
+                currState = directions[(directions.index(currState)-1)%len(directions)]
+            elif distance == 180:
+                currState = directions[(directions.index(currState)-2)%len(directions)]
+            elif distance == 270:
+                currState = directions[(directions.index(currState)-3)%len(directions)]
+        elif data[i][0] == 'F':
+            if currState == 'E':
+                x += distance
+            elif currState == 'W':
+                x -= distance
+            elif currState == 'N':
+                y += distance
+            elif currState == 'S':
+                y -= distance
+    return abs(x) + abs(y)
+
+print(solution(arr))
